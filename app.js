@@ -1,5 +1,6 @@
 const express = require("express");
 const mongoose = require('mongoose')
+mongoose.set("strictQuery", false)
 const app = express();
 const port = 3000;
 
@@ -9,6 +10,8 @@ const createError = require("http-errors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
 const logger = require("morgan");
+
+const mongoDB = 'mongodb://localhost:27017/library'
 
 app.set('view engine', 'ejs')
 
@@ -27,6 +30,12 @@ app.use('/users', libraryRoutes)
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}!`);
 });
+
+main().catch((err) => console.log(err));
+async function main() {
+  await mongoose.connect(mongoDB);
+}
+
 
 // catch 404 and forward to error handler
 app.use((req, res, next) => {
